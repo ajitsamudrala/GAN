@@ -82,7 +82,7 @@ Due to division by a probability of an outcome in KL Divergence equation, it may
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=D_{JS}(p&space;||&space;q)&space;=&space;\frac{1}{2}\&space;D_{KL}(p&space;||&space;\frac{p&space;&plus;&space;q}{2})&space;&plus;&space;\frac{1}{2}\&space;D_{KL}(q&space;||&space;\frac{p&space;&plus;&space;q}{2})" target="_blank"><img src="https://latex.codecogs.com/svg.latex?D_{JS}(p&space;||&space;q)&space;=&space;\frac{1}{2}\&space;D_{KL}(p&space;||&space;\frac{p&space;&plus;&space;q}{2})&space;&plus;&space;\frac{1}{2}\&space;D_{KL}(q&space;||&space;\frac{p&space;&plus;&space;q}{2})" title="D_{JS}(p || q) = \frac{1}{2}\ D_{KL}(p || \frac{p + q}{2}) + \frac{1}{2}\ D_{KL}(q || \frac{p + q}{2})" /></a>
 
-DCGANs
+GANs
 ----
 
 As aforementioned, GANs take a random sample from the latent space as an input and maps it to data space. In DCGANs, the mapping function is a deep neaural network, which is differentiable and parameterized by network weights. The mapping function is called `Generator(G)`. A `Discriminator(D)` is also a deep neaural network that takes a sample in the data space and maps it to the action space i.e., the probability of that sample being generated from data distribution. 
@@ -122,10 +122,9 @@ As stated in the original paper, in the early training period, the above loss do
 
 Equation `1` is an empiracal loss function. Its risk function or loss on the whole population i.e., for every possible image can be written as: 
 
-<a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\small&space;L_{d}&space;=&space;\max_{\theta&space;_{d}}&space;\int_{x}^{.}&space;p_{r}(x)\log&space;\widehat{y}\,&space;&plus;&space;p_{g}(x)log(1\,&space;-\,&space;\log(\widehat{y}))&space;dx" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\inline&space;\small&space;L_{d}&space;=&space;\max_{\theta&space;_{d}}&space;\int_{x}^{.}&space;p_{r}(x)\log&space;\widehat{y}\,&space;&plus;&space;p_{g}(x)log(1\,&space;-\,&space;\log(\widehat{y}))&space;dx" title="\small L_{d} = \max_{\theta _{d}} \int_{x}^{.} p_{r}(x)\log \widehat{y}\, + p_{g}(x)log(1\, -\, \log(\widehat{y})) dx" /></a>
+<a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\small&space;L_{d}^{r}=&space;E_{x\sim&space;p_{r}}\log&space;\widehat{y}\:&space;&plus;&space;E_{x\sim&space;p_{g}}\log&space;1-&space;\widehat{y}&space;=&space;\int_{x}^{.}&space;p_{r}(x)\log&space;\widehat{y}\,&space;&plus;&space;p_{g}(x)log(1\,&space;-\,&space;\log(\widehat{y}))&space;dx" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\small&space;L_{d}^{r}=&space;E_{x\sim&space;p_{r}}\log&space;\widehat{y}\:&space;&plus;&space;E_{x\sim&space;p_{g}}\log&space;1-&space;\widehat{y}&space;=&space;\int_{x}^{.}&space;p_{r}(x)\log&space;\widehat{y}\,&space;&plus;&space;p_{g}(x)log(1\,&space;-\,&space;\log(\widehat{y}))&space;dx" title="\small L_{d}^{r}= E_{x\sim p_{r}}\log \widehat{y}\: + E_{x\sim p_{g}}\log 1- \widehat{y} = \int_{x}^{.} p_{r}(x)\log \widehat{y}\, + p_{g}(x)log(1\, -\, \log(\widehat{y})) dx" /></a>
 
-
-<a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\frac{\mathrm{d}&space;L_{d}}{\mathrm{d}&space;\widehat{y}}&space;=&space;0" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\frac{\mathrm{d}&space;L_{d}}{\mathrm{d}&space;\widehat{y}}&space;=&space;0" title="\frac{\mathrm{d} L_{d}}{\mathrm{d} \widehat{y}} = 0" /></a>
+<a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\small&space;\frac{\mathrm{d}&space;L_{d}^{r}}{\mathrm{d}&space;\widehat{y}}&space;=&space;0" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\inline&space;\small&space;\frac{\mathrm{d}&space;L_{d}^{r}}{\mathrm{d}&space;\widehat{y}}&space;=&space;0" title="\small \frac{\mathrm{d} L_{d}^{r}}{\mathrm{d} \widehat{y}} = 0" /></a>
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\small&space;\frac{P_{r}(x)}{\widehat{y}}&space;-&space;\frac{P_{g}(x)}{1-\widehat{y}}&space;=&space;0" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\inline&space;\small&space;\frac{P_{r}(x)}{\widehat{y}}&space;-&space;\frac{P_{g}(x)}{1-\widehat{y}}&space;=&space;0" title="\small \frac{P_{r}(x)}{\widehat{y}} - \frac{P_{g}(x)}{1-\widehat{y}} = 0" /></a>
 
@@ -138,7 +137,6 @@ So when `y_hat` = `y_hat*`, the discriminator is at its minimum. At the end of t
 substituting it in equation `1` gives the optimal loss of the discriminator at the end of the training.
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\small&space;L(G^{*},&space;D^{*})&space;=&space;-2\log&space;2" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\inline&space;\small&space;L(G^{*},&space;D^{*})&space;=&space;-2\log&space;2" title="\small L(G^{*}, D^{*}) = -2\log 2" /></a>
-
 
 
 
