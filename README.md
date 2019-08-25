@@ -1,7 +1,7 @@
-Intro to GANs
+Premise of GANs
 ===
 
-A GAN takes a random sample from a high dimensional distribution as input and maps it to the data space. The task of learning is to learn a high capacity deterministic function that can efficiently capture the dependencies and patterns in the data so that the mapped point resembles a sample generated from the data distribution. 
+A GAN takes a random sample from a latent or prior distribution as input and maps it to the data space. The task of learning is to learn a deterministic function that can efficiently capture the dependencies and patterns in the data so that the mapped point resembles a sample generated from the data distribution. 
 
 Example:
 ---
@@ -10,7 +10,7 @@ I have generated 300 samples from `Isotropic Bivariate Gaussian distribution`.
 
 ![bi var guass](Images/bi_var_guassian.png)
 
-When passed through a function <a href="https://www.codecogs.com/eqnedit.php?latex=f(x)&space;=&space;x/10&space;&plus;&space;x/||x||" target="_blank"><img src="https://latex.codecogs.com/svg.latex?f(x)&space;=&space;x/10&space;&plus;&space;x/||x||" title="f(x) = x/10 + x/||x||" /></a>, the points form a `ring`, which demonstrates that a high capacity function like neural network can learn patterns in high dimensional data like images.
+When passed through a function <a href="https://www.codecogs.com/eqnedit.php?latex=f(x)&space;=&space;x/10&space;&plus;&space;x/||x||" target="_blank"><img src="https://latex.codecogs.com/svg.latex?f(x)&space;=&space;x/10&space;&plus;&space;x/||x||" title="f(x) = x/10 + x/||x||" /></a>, the points form a `ring`, which demonstrates that there could be a high capacity function that may be able to model data distribution of high dimensional data like images. Neural networks are out best bet as they are universal functional approximators. Hence, deep neural networks are used while modeling data distribution of images. 
 
 ![ring](Images/Ring_formation.png)
 
@@ -93,14 +93,18 @@ As aforementioned, GANs take a random sample from the latent space as an input a
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=P_{r}" target="_blank"><img src="https://latex.codecogs.com/svg.latex?P_{r}" title="P_{r}" /></a>: Real data distribution
 
+<a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\small&space;\widehat{y_{i}}&space;=&space;D(x_{i})" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\inline&space;\small&space;\widehat{y_{i}}&space;=&space;D(x_{i})" title="\small \widehat{y_{i}} = D(x_{i})" /></a>
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\small&space;g_{i}&space;=&space;G(z_{i})" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\inline&space;\small&space;g_{i}&space;=&space;G(z_{i})" title="\small g_{i} = G(z_{i})" /></a>
+
 D__m = (d_1, d_2, d_3, ... d_m) be the data generated according to P_r
 
 G__n = (g_m+1, g_m+2, .. g_n) be the data generated according to P_g
 
 
-Train `D` to minimize the emperical loss. 
+Train `D` to minimize the emperical loss. I am including min functions, as most deep learning frameworks only implement, minimization of a function.
 
-<a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\fn_cm&space;\small&space;L_{d}&space;=&space;\min_{\theta&space;_{d}}-&space;\sum_{i=1}^{n}\1(x_{i}&space;\epsilon&space;D_{m})log&space;\widehat{y}_{i}&space;&plus;&space;1(x_{i}\epsilon&space;G_{n})&space;\log&space;(1-&space;\widehat{y}_{i}))" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\inline&space;\fn_cm&space;\small&space;L_{d}&space;=&space;\min_{\theta&space;_{d}}-&space;\sum_{i=1}^{n}\1(x_{i}&space;\epsilon&space;D_{m})log&space;\widehat{y}_{i}&space;&plus;&space;1(x_{i}\epsilon&space;G_{n})&space;\log&space;(1-&space;\widehat{y}_{i}))" title="\small L_{d} = \min_{\theta _{d}}- \sum_{i=1}^{n}\1(x_{i} \epsilon D_{m})log \widehat{y}_{i} + 1(x_{i}\epsilon G_{n}) \log (1- \widehat{y}_{i}))" /></a>
+<a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;L_{d}&space;=&space;\max_{\theta&space;_{d}}\sum_{i=1}^{n}\1(x_{i}&space;\epsilon&space;D_{m})log&space;\widehat{y}_{i}&space;&plus;&space;1(x_{i}\epsilon&space;G_{n})&space;\log&space;(1-&space;\widehat{y}_{i}))&space;=&space;\min_{\theta&space;_{d}}-&space;\sum_{i=1}^{n}\1(x_{i}&space;\epsilon&space;D_{m})log&space;\widehat{y}_{i}&space;&plus;&space;1(x_{i}\epsilon&space;G_{n})&space;\log&space;(1-&space;\widehat{y}_{i}))&space;\rightarrow&space;1" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;L_{d}&space;=&space;\max_{\theta&space;_{d}}\sum_{i=1}^{n}\1(x_{i}&space;\epsilon&space;D_{m})log&space;\widehat{y}_{i}&space;&plus;&space;1(x_{i}\epsilon&space;G_{n})&space;\log&space;(1-&space;\widehat{y}_{i}))&space;=&space;\min_{\theta&space;_{d}}-&space;\sum_{i=1}^{n}\1(x_{i}&space;\epsilon&space;D_{m})log&space;\widehat{y}_{i}&space;&plus;&space;1(x_{i}\epsilon&space;G_{n})&space;\log&space;(1-&space;\widehat{y}_{i}))&space;\rightarrow&space;1" title="L_{d} = \max_{\theta _{d}}\sum_{i=1}^{n}\1(x_{i} \epsilon D_{m})log \widehat{y}_{i} + 1(x_{i}\epsilon G_{n}) \log (1- \widehat{y}_{i})) = \min_{\theta _{d}}- \sum_{i=1}^{n}\1(x_{i} \epsilon D_{m})log \widehat{y}_{i} + 1(x_{i}\epsilon G_{n}) \log (1- \widehat{y}_{i})) \rightarrow 1" /></a>
 
 Fix the `D` network, and train `G` to maximize the loss of `D` over G_n. 
 
@@ -109,6 +113,34 @@ Fix the `D` network, and train `G` to maximize the loss of `D` over G_n.
 As stated in the original paper, in the early training period, the above loss doesn't offer enough gradient to update the parameters of `G` network, as initially `P_g` is distant from `P_d`, which makes it easy for `D` to classify generated images. Hence, we try to maximize it my switching labels.
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\fn_cm&space;\small&space;L_{g}&space;=\min_{\theta&space;_{g}}&space;\sum_{i=1}^{n}\&space;1(x_{i}\epsilon&space;G_{n})&space;\log&space;(1-&space;\widehat{y}_{i}))&space;=&space;\max_{\theta&space;_{g}}&space;\sum_{i=1}^{n}\&space;1(x_{i}\epsilon&space;G_{n})&space;\log&space;(\widehat{y}_{i}))&space;=&space;\min_{\theta&space;_{g}}&space;-&space;\sum_{i=1}^{n}\&space;1(x_{i}\epsilon&space;G_{n})&space;\log&space;(\widehat{y}_{i})" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\inline&space;\fn_cm&space;\small&space;L_{g}&space;=\min_{\theta&space;_{g}}&space;\sum_{i=1}^{n}\&space;1(x_{i}\epsilon&space;G_{n})&space;\log&space;(1-&space;\widehat{y}_{i}))&space;=&space;\max_{\theta&space;_{g}}&space;\sum_{i=1}^{n}\&space;1(x_{i}\epsilon&space;G_{n})&space;\log&space;(\widehat{y}_{i}))&space;=&space;\min_{\theta&space;_{g}}&space;-&space;\sum_{i=1}^{n}\&space;1(x_{i}\epsilon&space;G_{n})&space;\log&space;(\widehat{y}_{i})" title="\small L_{g} =\min_{\theta _{g}} \sum_{i=1}^{n}\ 1(x_{i}\epsilon G_{n}) \log (1- \widehat{y}_{i})) = \max_{\theta _{g}} \sum_{i=1}^{n}\ 1(x_{i}\epsilon G_{n}) \log (\widehat{y}_{i})) = \min_{\theta _{g}} - \sum_{i=1}^{n}\ 1(x_{i}\epsilon G_{n}) \log (\widehat{y}_{i})" /></a>
+
+
+
+<h3> Optimization And Theoritical Results</h3>
+
+<h4> Optimal Discriminator for fixed `G` </h4>
+
+Equation `1` is an empiracal loss function. Its risk function or loss on the whole population i.e., for every possible image can be written as: 
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\small&space;L_{d}&space;=&space;\max_{\theta&space;_{d}}&space;\int_{x}^{.}&space;p_{r}(x)\log&space;\widehat{y}\,&space;&plus;&space;p_{g}(x)log(1\,&space;-\,&space;\log(\widehat{y}))&space;dx" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\inline&space;\small&space;L_{d}&space;=&space;\max_{\theta&space;_{d}}&space;\int_{x}^{.}&space;p_{r}(x)\log&space;\widehat{y}\,&space;&plus;&space;p_{g}(x)log(1\,&space;-\,&space;\log(\widehat{y}))&space;dx" title="\small L_{d} = \max_{\theta _{d}} \int_{x}^{.} p_{r}(x)\log \widehat{y}\, + p_{g}(x)log(1\, -\, \log(\widehat{y})) dx" /></a>
+
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\frac{\mathrm{d}&space;L_{d}}{\mathrm{d}&space;\widehat{y}}&space;=&space;0" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\frac{\mathrm{d}&space;L_{d}}{\mathrm{d}&space;\widehat{y}}&space;=&space;0" title="\frac{\mathrm{d} L_{d}}{\mathrm{d} \widehat{y}} = 0" /></a>
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\small&space;\frac{P_{r}(x)}{\widehat{y}}&space;-&space;\frac{P_{g}(x)}{1-\widehat{y}}&space;=&space;0" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\inline&space;\small&space;\frac{P_{r}(x)}{\widehat{y}}&space;-&space;\frac{P_{g}(x)}{1-\widehat{y}}&space;=&space;0" title="\small \frac{P_{r}(x)}{\widehat{y}} - \frac{P_{g}(x)}{1-\widehat{y}} = 0" /></a>
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\widehat{y}^{*}&space;=&space;\frac{P_{r}(x)}{P_{r}(x)&space;&plus;&space;P_{g}(x)}&space;\rightarrow&space;2" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\widehat{y}^{*}&space;=&space;\frac{P_{r}(x)}{P_{r}(x)&space;&plus;&space;P_{g}(x)}&space;\rightarrow&space;2" title="\widehat{y}^{*} = \frac{P_{r}(x)}{P_{r}(x) + P_{g}(x)} \rightarrow 2" /></a>
+
+So when `y_hat` = `y_hat*`, the discriminator is at its minimum. At the end of the training, if `G` does a good job at approximating `P_r`, then `P_g` ~ `P_r`. 
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\because&space;\,&space;P_{r}(x)&space;\sim&space;P_{g}(x),\,&space;\,&space;\,&space;\,&space;\,&space;\widehat{y}^{*}&space;=&space;1/2" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\because&space;\,&space;P_{r}(x)&space;\sim&space;P_{g}(x),\,&space;\,&space;\,&space;\,&space;\,&space;\widehat{y}^{*}&space;=&space;1/2" title="\because \, P_{r}(x) \sim P_{g}(x),\, \, \, \, \, \widehat{y}^{*} = 1/2" /></a>
+
+substituting it in equation `1` gives the optimal loss of the discriminator at the end of the training.
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\small&space;L(G^{*},&space;D^{*})&space;=&space;-2\log&space;2" target="_blank"><img src="https://latex.codecogs.com/svg.latex?\inline&space;\small&space;L(G^{*},&space;D^{*})&space;=&space;-2\log&space;2" title="\small L(G^{*}, D^{*}) = -2\log 2" /></a>
+
+
+
 
 
 
