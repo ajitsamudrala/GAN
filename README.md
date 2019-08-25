@@ -47,17 +47,25 @@ Consider images of size `28 x 28`. Each pixel is a random variable that can take
 
 From the above table: `P(Y = y_1 | X = x_1) = P(Y = y_1 & X = x_1) / P(X = x_1)` = `(2/50)/(17/50)` = `2/17`
 
-Entropy
-----
+<h3> Entropy </h3>
 
+Entropy measures the degree of uncertainity of an outcome of a trail according to a `p(x)`. 
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=H(p)&space;=&space;-\sum_{k=1}^{K}p_{i}\log&space;p_{i}" target="_blank"><img src="https://latex.codecogs.com/svg.latex?H(p)&space;=&space;-\sum_{k=1}^{K}p_{i}\log&space;p_{i}" title="H(p) = -\sum_{k=1}^{K}p_{i}\log p_{i}" /></a>
+
+![entropy](Images/entropy.png)
 
  
+The entropy of a unbiased coin is higher than biased coin. The difference in entropy increases with degree of ploraization of probabilites of biased coin.
 
+<h3>Cross Entropy</h3>
 
+Cross entropy measure degree of uncertainity of a trial according to `p(y)` but in truth according to `p(x)`.
 
+<a href="https://www.codecogs.com/eqnedit.php?latex=H(p(x),&space;p(y))&space;=&space;-\sum_{k=1}^{K}p(x_{i})\log&space;p(y_{i})" target="_blank"><img src="https://latex.codecogs.com/svg.latex?H(p(x),&space;p(y))&space;=&space;-\sum_{k=1}^{K}p(x_{i})\log&space;p(y_{i})" title="H(p(x), p(y)) = -\sum_{k=1}^{K}p(x_{i})\log p(y_{i})" /></a>
 
+![entropy](Images/cross_entropy.png)
 
-
-
+Cross entropy is higher when a trial is conducted according to unbiased coin probability distribution but you think it is being conducted according to biased coin probability distribution. 
 
 
