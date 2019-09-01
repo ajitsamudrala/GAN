@@ -1,45 +1,45 @@
-import os
-import math
 from pathlib import Path
-from typing import Callable, Optional, Tuple, Union
+from typing import Union
 
-import numpy as np
-import matplotlib.pyplot as plt
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
+import tensorflow as tf
+from tensorflow.data import Dataset
 
 
 class DataLoader:
     """
-    Loads images from a dir
+    Loads images from a dir and preprocess them
     """
 
-    def __init__(self, data_dir: Union[str, Path], image_dir: Union[str, Path], batch_size: int = 32,
-                 output_size: Tuple[int, int] = (256, 256), augment_fn: Optional[Callable] = None):
+    def __init__(self, data_dir: Union[str, Path], batch_size: int = 64):
         self.data_dir = Path(data_dir)  # data dir that contains data in its subdirectories
-        self.image_dir = Path(image_dir)  # dir in which data is stored
         self.batch_size = batch_size
-        self.output_size = output_size
-        self.augment_fn = augment_fn
-        self.num_samples = len(os.listdir(self.image_dir))
+        tf.enable_eager_execution()
+
+    def resize_and_crop(self, image_path):
+        image_raw = tf.read_file(image_path)
+        decoded_image = tf.image.decode_jpeg(image_raw, channels=3)
+        resized_image = tf.image.resize(decoded_image, [256, 256])
+        cropped_image = tf.image.central_crop(resized_image, 0.5) / 255
+        return cropped_image
 
     def image_generator(self):
-        image_gen = ImageDataGenerator(featurewise_center=True)  # mean centering
-        sample_data = self.get_sample_data()
-        image_gen.fit(sample_data)  # to calculate sample stats for mean centering
-        data_gen = image_gen.flow_from_directory(
-            self.data_dir,
-            target_size=self.output_size,
-            batch_size=self.batch_size,
-            class_mode=None)
-        return data_gen
+        all_image_paths = list(self.data_dir.glob('*/*'))
+        all_image_paths = [str(image_path) for image_path in all_image_paths]
+        for image_path in all_image_paths:
+            yield self.resize_and_crop(image_path)
 
-    def get_sample_data(self):
-        random_100_indicies = np.random.permutation(self.num_samples - 1)
-        sample_data_names = np.array(os.listdir(self.image_dir))[random_100_indicies]
-        sample_data_paths = [self.image_dir / image_name for image_name in sample_data_names]
-        sample_data = [plt.imread(path) for path in sample_data_paths]
-        return sample_data
+    def get_dataset(self):
+        dataset = Dataset.from_generator(self.image_generator, tf.float32, self.output_shape)
+        dataset = dataset.repeat()
+        dataset = dataset.shuffle(buffer_size=self.num_samples)
+        dataset = dataset.batch(self.batch_size)
+        dataset = dataset.prefetch(5)
+        return dataset
 
     @property
-    def num_batches(self):
-        return math.ceil(self.num_samples / self.batch_size)
+    def num_samples(self):
+        return len(list(self.data_dir.glob('*/*')))
+
+    @property
+    def output_shape(self):
+        return tf.TensorShape([128, 128, 3])
