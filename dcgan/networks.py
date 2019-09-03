@@ -1,9 +1,7 @@
 from typing import Tuple
 
-import numpy as np
-import tensorflow as tf
 from tensorflow.keras import layers
-from tensorflow.keras.layers import Conv2D, Conv2DTranspose
+from tensorflow.keras.layers import Conv2D, Conv2DTranspose, Input
 from tensorflow.keras.models import Sequential, Model
 
 LATENT_SHAPE = (1, 1, 100)  # shape of the latent vector
@@ -44,6 +42,7 @@ def generator() -> Model:
                         kernel_initializer='glorot_normal', kernel_regularizer='l2'))
     model.add(layers.BatchNormalization(axis=-1))
     model.add(layers.ReLU())
+
     return model
 
 
@@ -80,5 +79,6 @@ def discriminator(input_shape: Tuple[int, ...], output_shape: Tuple[int, ...]) -
     model.add(layers.BatchNormalization(axis=-1))
     model.add(layers.ReLU())
     model.add(
-        layers.Dense(output_shape, kernel_initializer='glorot_normal', kernel_regularizer='l2', activation='sigmoid'))
+        layers.Dense(output_shape[0], kernel_initializer='glorot_normal', kernel_regularizer='l2', activation='sigmoid'))
+
     return model

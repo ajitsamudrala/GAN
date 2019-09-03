@@ -13,7 +13,6 @@ class DataLoader:
     def __init__(self, data_dir: Union[str, Path], batch_size: int = 64):
         self.data_dir = Path(data_dir)  # data dir that contains data in its subdirectories
         self.batch_size = batch_size
-        tf.enable_eager_execution()
 
     def resize_and_crop(self, image_path):
         image_raw = tf.read_file(image_path)
@@ -31,7 +30,6 @@ class DataLoader:
     def get_dataset(self):
         dataset = Dataset.from_generator(self.image_generator, tf.float32, self.output_shape)
         dataset = dataset.repeat()
-        dataset = dataset.shuffle(buffer_size=self.num_samples)
         dataset = dataset.batch(self.batch_size)
         dataset = dataset.prefetch(5)
         return dataset
