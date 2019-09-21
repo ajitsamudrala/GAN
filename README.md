@@ -1,7 +1,7 @@
 Premise of GANs
 ===
 
-A GAN takes a random sample from a latent or prior distribution as input and maps it to the data space. The task of learning is to learn a deterministic function that can efficiently capture the dependencies and patterns in the data so that the mapped point resembles a sample generated from the data distribution. 
+A GAN takes a random sample from a latent or prior distribution as input and maps it to the data space. The task of training is to learn a deterministic function that can efficiently capture the dependencies and patterns in the data so that the mapped point resembles a sample generated from the data distribution. 
 
 Example:
 ---
