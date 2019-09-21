@@ -1,9 +1,9 @@
-import argparse
-import os
-from pathlib import Path
-from typing import Callable, Dict, Union
+import argparse, os
+import sys
 
-import numpy as np
+sys.path.append('..')
+from typing import Callable, Dict
+
 import tensorflow as tf
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model
@@ -36,18 +36,20 @@ class Executor:
         self.combined.compile(loss=self.loss(), optimizer=self.optimizer())
         for epoch in range(num_epochs):
             for i, batch in enumerate(self.dataset):
-                random_noise = tf.random.normal([batch.shape[0]] + list(LATENT_SHAPE))
+                batch_size = batch.shape[0]
+                # generates random noise of batch size
+                random_noise = tf.random.normal([batch_size] + list(LATENT_SHAPE))
                 gen_images = self.generator.predict(random_noise)
 
                 # update discriminator parameters
-                disc_real_loss = self.discriminator.train_on_batch(batch, tf.ones(batch.shape[0]))
-                disc_fake_loss = self.discriminator.train_on_batch(gen_images, tf.zeros(batch.shape[0]))
-                disc_total_loss = tf.add(disc_real_loss[0], disc_fake_loss[0])
+                disc_real_loss = self.discriminator.train_on_batch(batch, tf.ones(batch_size))
+                disc_fake_loss = self.discriminator.train_on_batch(gen_images, tf.zeros(batch_size))
+                disc_total_loss = tf.add(disc_real_loss[0], disc_fake_loss[0]) / tf.to_float(batch_size * 2)
                 disc_real_mean_prediction = self.discriminator.predict(batch).mean()
                 disc_fake_mean_prediction = self.discriminator.predict(gen_images).mean()
 
                 # update generator parameters
-                gen_loss = self.combined.train_on_batch(random_noise, tf.ones(batch.shape[0]))
+                gen_loss = self.combined.train_on_batch(random_noise, tf.ones(batch_size)) / tf.to_float(batch_size)
                 disc_fake_mean_prediction_after_update = self.combined.predict(random_noise).mean()
 
                 if i % 50 == 0:
@@ -70,7 +72,7 @@ class Executor:
 def args_parser():
     parser = argparse.ArgumentParser(description='Run GANs on Celeb Dataset')
     parser.add_argument('data_dir', help='Path to dir containing data', type=str)
-    parser.add_argument('epochs', help='Number of training epochs', type=int, default=15)
+    parser.add_argument('epochs', help='Number of training epochs', type=int)
     return parser
 
 

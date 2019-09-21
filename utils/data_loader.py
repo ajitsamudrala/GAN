@@ -15,7 +15,7 @@ class DataLoader:
         self.batch_size = batch_size
 
     def resize_and_crop(self, image_path):
-        image_raw = tf.read_file(image_path)
+        image_raw = tf.io.read_file(image_path)
         decoded_image = tf.image.decode_jpeg(image_raw, channels=3)
         resized_image = tf.image.resize(decoded_image, [256, 256])
         cropped_image = tf.image.central_crop(resized_image, 0.5) / 255

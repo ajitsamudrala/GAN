@@ -10,7 +10,7 @@ I have generated 300 samples from `Isotropic Bivariate Gaussian distribution`.
 
 ![bi var guass](Images/bi_var_guassian.png)
 
-When passed through a function <a href="https://www.codecogs.com/eqnedit.php?latex=f(x)&space;=&space;x/10&space;&plus;&space;x/||x||" target="_blank"><img src="https://latex.codecogs.com/svg.latex?f(x)&space;=&space;x/10&space;&plus;&space;x/||x||" title="f(x) = x/10 + x/||x||" /></a>, the points form a `ring`, which demonstrates that there could be a high capacity function that may be able to model data distribution of high dimensional data like images. Neural networks are out best bet as they are universal functional approximators. Hence, deep neural networks are used while modeling data distribution of images. 
+When passed through a function <a href="https://www.codecogs.com/eqnedit.php?latex=f(x)&space;=&space;x/10&space;&plus;&space;x/||x||" target="_blank"><img src="https://latex.codecogs.com/svg.latex?f(x)&space;=&space;x/10&space;&plus;&space;x/||x||" title="f(x) = x/10 + x/||x||" /></a>, the points form a `ring`, which demonstrates that there could be a high capacity function that may be able to model data distribution of high dimensional data like images. Neural networks are out best bet as they are universal functional approximators. Hence, deep neural networks are used while modeling data distribution of images. Unlike MLE or KDE, this is an implicit density estimation
 
 ![ring](Images/Ring_formation.png)
 
