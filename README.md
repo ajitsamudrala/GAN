@@ -72,7 +72,7 @@ Cross entropy is higher when a trial is conducted according to unbiased coin pro
 
 KL Divergence is the difference between cross-entropy and entropy of the true distribution. KL Divergence is equal to zero when two distributions are equal. Hence, when you want to approximate or model a probability distribution with other, minimizing the KL Divergence between them will make them similar.
 
-<a href="https://www.codecogs.com/eqnedit.php?latex=D_{KL}(p&space;||&space;q)&space;=&space;H(p,&space;q)&space;-&space;H(p)&space;=&space;-&space;\sum_{k=1}^{K}&space;p_{k}\log&space;\frac{p_{k}}{q_{k}}" target="_blank"><img src="https://latex.codecogs.com/svg.latex?D_{KL}(p&space;||&space;q)&space;=&space;H(p,&space;q)&space;-&space;H(p)&space;=&space;-&space;\sum_{k=1}^{K}&space;p_{k}\log&space;\frac{p_{k}}{q_{k}}" title="D_{KL}(p || q) = H(p, q) - H(p) = - \sum_{k=1}^{K} p_{k}\log \frac{p_{k}}{q_{k}}" /></a>
+<a href="https://www.codecogs.com/eqnedit.php?latex=D_{KL}(p&space;||&space;q)&space;=&space;H(p,&space;q)&space;-&space;H(p)&space;=&space;\sum_{k=1}^{K}&space;p_{k}\log&space;\frac{p_{k}}{q_{k}}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?D_{KL}(p&space;||&space;q)&space;=&space;H(p,&space;q)&space;-&space;H(p)&space;=&space;\sum_{k=1}^{K}&space;p_{k}\log&space;\frac{p_{k}}{q_{k}}" title="D_{KL}(p || q) = H(p, q) - H(p) = \sum_{k=1}^{K} p_{k}\log \frac{p_{k}}{q_{k}}" /></a>
 
 `D(fair||biased) = H(fair, biased) – H(fair) = 2.19-1 = 1.19`
 
